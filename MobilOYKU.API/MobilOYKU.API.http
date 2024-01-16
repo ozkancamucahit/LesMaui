@@ -1,0 +1,6 @@
+@MobilOYKU.API_HostAddress = http://localhost:5124
+
+GET {{MobilOYKU.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
