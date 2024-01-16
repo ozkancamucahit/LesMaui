@@ -7,4 +7,8 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MobilOyku.API.Library\MobilOyku.API.Library.csproj" />
+  </ItemGroup>
+
 </Project>
