@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[Photo]
+(
+	[Id] INT NOT NULL PRIMARY KEY, 
+    [FilePath] NVARCHAR(200) NOT NULL, 
+    [CreatedDate] DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+)
