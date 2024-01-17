@@ -1,10 +1,9 @@
 ﻿CREATE TABLE [dbo].[MEMO]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [About] VARCHAR(2000) NULL, 
     [CityId] INT NULL, 
     [UserId] INT NOT NULL, 
-    [MemoPhotoId] INT NOT NULL, 
     [CreatedDate] DATETIME2 NOT NULL DEFAULT GETUTCDATE(), 
-    CONSTRAINT [FK_MEMO_ToUser] FOREIGN KEY ([UserId]) REFERENCES [User]([Id]), 
-    CONSTRAINT [FK_MEMO_ToMemoPhoto] FOREIGN KEY ([MemoPhotoId]) REFERENCES [MemoPhoto]([Id])
+    CONSTRAINT [FK_MEMO_ToUser] FOREIGN KEY ([UserId]) REFERENCES [User]([Id])
 )
