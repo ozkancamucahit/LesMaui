@@ -22,7 +22,7 @@ namespace UI.Library.API
         #region CTOR
         public APIHelper()
         {
-			string api = "http://localhost:5124"; //ConfigurationManager.AppSettings["api"] ?? "";
+			string api = "http://10.0.2.2:5124"; //ConfigurationManager.AppSettings["api"] ?? "";
 
 			apiClient = new HttpClient();
 			apiClient.BaseAddress = new Uri(api);
