@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UI.Library.Models;
+
+namespace UI.Library.API
+{
+	public interface IMemoEndPoint
+	{
+		Task<IEnumerable<MemoModel>> GetMemos(string UserName);
+		Task<bool> AddMemo(int UserId, string About);
+		Task<bool> RemoveMemo(int MemoId);
+
+
+
+	}
+}
