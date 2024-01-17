@@ -1,4 +1,5 @@
-﻿using MobilOyku.API.Library.Internal.DataAccess;
+﻿using MobilOyku.API.Library.DTOS;
+using MobilOyku.API.Library.Internal.DataAccess;
 using MobilOyku.API.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace MobilOyku.API.Library.DataAccess
 			}
 
 			return result.Any() ? result.First() : new UserModel();
+		}
+
+		public bool SaveUser(UserCreateDTO user)
+		{
+			return sql.SaveData("[dbo].[spUser_Insert]", user);
 		}
 	}
 }

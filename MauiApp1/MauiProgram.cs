@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using UI.Library.API;
 
 namespace MauiApp1
 {
@@ -13,7 +14,12 @@ namespace MauiApp1
 				{
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 					fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-				});
+				})
+				.Services
+					.AddSingleton<IAPIHelper, APIHelper>()
+					.AddTransient<IPhotoEndPoint, PhotoEndPoint>()
+					.AddTransient<IMemoEndPoint, MemoEndPoint>()
+					.AddTransient<MainPage>();
 
 #if DEBUG
 			builder.Logging.AddDebug();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MobilOyku.API.Library.DataAccess;
+using MobilOyku.API.Library.DTOS;
 using MobilOyku.API.Library.Models;
 using System.Net;
 using System.Security.Claims;
@@ -23,7 +24,7 @@ namespace MobilOYKU.API.Controllers
 
 
 		[HttpGet]
-		[Route("{userName}")]
+		[Route("{userName}", Name = nameof(ByUserName))]
 		public IActionResult ByUserName(string userName)
 		{
 			UserModel result = userData.GetUserByUserName(userName);
@@ -32,6 +33,19 @@ namespace MobilOYKU.API.Controllers
 				return NoContent();
 
 			return Ok(result);
+
+		}
+		
+		[HttpPost]
+		public IActionResult SaveUser(UserCreateDTO user)
+		{
+			
+			var result = userData.SaveUser(user);
+
+			if (result)
+				return CreatedAtRoute(nameof(ByUserName), new { userName = user.UserName }, user);
+			else
+				return BadRequest("COULD NOT CREATE USER => " + user.UserName);	
 
 		}
 

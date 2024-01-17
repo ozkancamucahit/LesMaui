@@ -11,11 +11,11 @@ namespace MobilOyku.API.Library.Internal.DataAccess
 		void CommitTransaction();
 		void Dispose();
 		string GetConnectionString(string name);
-		IEnumerable<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName);
+		IEnumerable<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName = "OYKUDATA");
 		IEnumerable<T> LoadDataInTransaction<T, U>(string storedProcedure, U parameters);
 		void RollbackTransaction();
-		bool SaveData<T>(string storedProcedure, T parameters, string connectionStringName);
+		bool SaveData<T>(string storedProcedure, T parameters, string connectionStringName = "OYKUDATA");
 		void SaveDataInTransaction<T>(string storedProcedure, T parameters);
-		void StartTransaction(string connStringName);
+		void StartTransaction(string connStringName = "OYKUDATA");
 	}
 }

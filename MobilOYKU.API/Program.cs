@@ -9,7 +9,9 @@ builder.Services.AddControllers();
 
 builder.Services
 	.AddTransient<ISQLDataAccess, SQLDataAccess>()
-	.AddTransient<IUserData, UserData>();
+	.AddTransient<IUserData, UserData>()
+	.AddTransient<IMemoData, MemoData>()
+	.AddTransient<IPhotoData, PhotoData>();
 
 var app = builder.Build();
 
