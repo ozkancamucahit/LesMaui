@@ -41,17 +41,24 @@ namespace UI.Library.API
 
 		public async Task<IEnumerable<MemoModel>> GetMemos(string UserName)
 		{
-			using (HttpResponseMessage response = await apiHelper.ApiClient.GetAsync($"/api/Memo/UserMemos/{UserName}"))
+			try
 			{
-				if (response.IsSuccessStatusCode)
+				using (HttpResponseMessage response = await apiHelper.ApiClient.GetAsync($"/api/Memo/UserMemos/{UserName}"))
 				{
-					var result = await response.Content.ReadAsAsync<IEnumerable<MemoModel>>();
-					return result;
+					if (response.IsSuccessStatusCode)
+					{
+						var result = await response.Content.ReadAsAsync<IEnumerable<MemoModel>>();
+						return result;
+					}
+					else
+					{
+						throw new InvalidOperationException(response.ReasonPhrase);
+					}
 				}
-				else
-				{
-					throw new InvalidOperationException(response.ReasonPhrase);
-				}
+			}
+			catch 
+			{
+				return Enumerable.Empty<MemoModel>();
 			}
 		}
 
