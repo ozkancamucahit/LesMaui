@@ -8,17 +8,19 @@ namespace MobilOyku.API.Library.Models
 {
 	public sealed class MemoModel
 	{
-			public int Id { get; init; }
-			public string City { get; set; } = String.Empty;
-			public int UserId { get; set; }
-			private DateTime _CreatedDate;
+		//public int Id { get; init; }
+		//public string City { get; set; } = String.Empty;
+		public int UserId { get; set; }
+		public string About { get; set; } = String.Empty;
 
-			public DateTime CreatedDate
+		private DateTime _CreatedDate;
+		public DateTime CreatedDate
 			{
 				get { return _CreatedDate.ToLocalTime(); }
 				set { _CreatedDate = value; }
 			}
 
 
-	}
+
+    }
 }
