@@ -56,7 +56,7 @@ namespace UI.Library.API
 					}
 				}
 			}
-			catch 
+			catch (Exception ex)
 			{
 				return Enumerable.Empty<MemoModel>();
 			}

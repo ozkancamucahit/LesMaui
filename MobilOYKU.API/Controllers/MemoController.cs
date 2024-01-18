@@ -56,6 +56,11 @@ namespace MobilOYKU.API.Controllers
 			try
 			{
 				var result =  memoData.GetUserMemos(UserName);
+
+				if (!result.Any())
+				{
+					return NoContent();
+				}
 				return Ok(result);
 			}
 			catch (Exception ex)
