@@ -13,11 +13,22 @@ IF LEN(@UserName) < 3
 		RETURN;
 	END
 
-INSERT INTO [dbo].[USER]
-( 
- [UserName], [CreatedDate]
-)
-VALUES
-( 
- @UserName, GETUTCDATE()
-)
+
+IF NOT EXISTS (SELECT Id FROM [dbo].[USER] AS U (NOLOCK) WHERE U.UserName = @UserName)
+
+BEGIN
+
+	PRINT 'INSERTING'
+
+	INSERT INTO [dbo].[USER]
+	( 
+	 [UserName], [CreatedDate]
+	)
+	VALUES
+	( 
+	 @UserName, GETUTCDATE()
+	)
+
+END
+
+PRINT 'NOT INSERTING'

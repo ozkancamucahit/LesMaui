@@ -16,6 +16,7 @@ SELECT
 	,M.CityId
 	,M.CreatedDate AS [MemoDate]
 	,U.UserName
+	,U.Id AS [UserId]
 	,P.FilePath AS [PhotoFilePath]
 	,P.CreatedDate AS [PhotoCreateDate]
 FROM
