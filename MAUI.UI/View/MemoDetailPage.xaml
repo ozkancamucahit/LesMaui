@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.UI.View.MemoDetailPage"
+             xmlns:viewmodel="clr-namespace:MAUI.UI.ViewModel"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             x:DataType="viewmodel:MemoDetailViewModel"
+             Title="{Binding Memo.UserName, StringFormat='{0}s Memo'}">
+
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*">
+
+            <BoxView
+                    Grid.RowSpan="2"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill"/>
+
+            <Border StrokeShape="RoundRectangle 10"
+                    Stroke="White"
+                    StrokeThickness="6"
+                    HeightRequest="160"
+                    WidthRequest="160"
+                    Margin="0,8,0,0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                <Image Aspect="AspectFill"
+                        HeightRequest="160"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Source="{Binding Memo.PhotoFilePath}"
+                        WidthRequest="160"/>
+            </Border>
+
+
+            <Label  Style="{StaticResource LargeLabel}" 
+                    Grid.Row="1"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Text="{Binding Memo.About}" 
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,8"/>
+
+            <maps:Map x:Name="map" 
+                      IsScrollEnabled="False" 
+                      IsTrafficEnabled="False"
+                      Grid.Row="2"/>
+
+        </Grid>
+    </ScrollView>
+
+
+</ContentPage>
