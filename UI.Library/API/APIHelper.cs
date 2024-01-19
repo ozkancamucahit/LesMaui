@@ -23,8 +23,11 @@ namespace UI.Library.API
         #region CTOR
         public APIHelper()
         {
-			//string api = "http://localhost:5124"; // PC
-			string api = "http://10.0.2.2:5124"; // MOBILE ConfigurationManager.AppSettings["api"] ?? "";
+			string api = String.Empty;
+
+			// api = "http://localhost:5124"; // PC
+			api = "http://10.0.2.2:5124"; // MOBILE
+			//api = "https://192.168.1.89:54592"; // LOCAL_MOBILE
 
 			apiClient = new HttpClient();
 			apiClient.BaseAddress = new Uri(api);

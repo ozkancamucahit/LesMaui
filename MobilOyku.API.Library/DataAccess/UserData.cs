@@ -39,7 +39,7 @@ namespace MobilOyku.API.Library.DataAccess
 
 		public bool SaveUser(UserCreateDTO user)
 		{
-			return sql.SaveData("[dbo].[spUser_Insert]", user);
+			 return sql.SaveData("[dbo].[spUser_Insert]", user);
 		}
 	}
 }

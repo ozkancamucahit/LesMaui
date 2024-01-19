@@ -9,7 +9,7 @@ namespace MobilOyku.API.Library.DTOS
 	public sealed class UserCreateDTO
 	{
 
-		private string _userName = String.Empty;
+        private string _userName = String.Empty;
 
 		public string UserName
 		{

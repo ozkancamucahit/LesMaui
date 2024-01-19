@@ -40,12 +40,22 @@ namespace MobilOYKU.API.Controllers
 		public IActionResult SaveUser(UserCreateDTO user)
 		{
 			
-			var result = userData.SaveUser(user);
+			UserModel existingUser = userData.GetUserByUserName(user.UserName);
 
-			if (result)
-				return CreatedAtRoute(nameof(ByUserName), new { userName = user.UserName }, user);
+			if (existingUser.Id == 0)
+			{
+				var result = userData.SaveUser(user);
+
+				if (result)
+					return CreatedAtRoute(nameof(ByUserName), new { userName = user.UserName }, user);
+				else
+					return BadRequest("COULD NOT CREATE USER => " + user.UserName);  
+			}
+
 			else
-				return BadRequest("COULD NOT CREATE USER => " + user.UserName);	
+			{
+				return CreatedAtRoute(nameof(ByUserName), new { userName = user.UserName }, user);
+			}
 
 		}
 

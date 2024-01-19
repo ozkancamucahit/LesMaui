@@ -23,18 +23,25 @@ namespace UI.Library.API
 		{
 			var request = new { MemoId, FilePath};
 
-			using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Photo/SavePhoto/", request))
+			try
 			{
+				using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Photo/SavePhoto/", request))
+				{
 
-				if (response.IsSuccessStatusCode)
-				{
-					//TODO: Log Call
-					return true;
+					if (response.IsSuccessStatusCode)
+					{
+						//TODO: Log Call
+						return true;
+					}
+					else
+					{
+						throw new InvalidOperationException(response.ReasonPhrase);
+					}
 				}
-				else
-				{
-					throw new InvalidOperationException(response.ReasonPhrase);
-				}
+			}
+			catch (Exception ex)
+			{
+				return false;
 			}
 		}
 
@@ -42,18 +49,25 @@ namespace UI.Library.API
 		{
 			var request = new { PhotoId };
 
-			using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Photo/RemovePhoto/", request))
+			try
 			{
+				using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Photo/RemovePhoto/", request))
+				{
 
-				if (response.IsSuccessStatusCode)
-				{
-					//TODO: Log Call
-					return true;
+					if (response.IsSuccessStatusCode)
+					{
+						//TODO: Log Call
+						return true;
+					}
+					else
+					{
+						throw new InvalidOperationException(response.ReasonPhrase);
+					}
 				}
-				else
-				{
-					throw new InvalidOperationException(response.ReasonPhrase);
-				}
+			}
+			catch (Exception ex) 
+			{ 
+				return false; 
 			}
 		}
 	}

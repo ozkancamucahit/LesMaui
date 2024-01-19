@@ -21,6 +21,7 @@ namespace MobilOyku.API.Library.DTOS
 		}
 
         public string UserName { get; set; } = String.Empty;
+        public int UserId { get; set; }
 
 		public string PhotoFilePath { get; set; } = String.Empty;
 

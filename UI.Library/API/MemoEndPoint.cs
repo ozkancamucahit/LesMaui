@@ -24,18 +24,23 @@ namespace UI.Library.API
 		{
 			var request = new { UserId, About};
 
-			using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Memo/SaveMemo", request))
+			try
 			{
-
-				if (response.IsSuccessStatusCode)
+				using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Memo/SaveMemo", request))
 				{
-					//TODO: Log Call
-					return true;
+					if (response.IsSuccessStatusCode)
+					{
+						return true;
+					}
+					else
+					{
+						throw new InvalidOperationException(response.ReasonPhrase);
+					}
 				}
-				else
-				{
-					throw new InvalidOperationException(response.ReasonPhrase);
-				}
+			}
+			catch (Exception ex) 
+			{ 
+				return false; 
 			}
 		}
 
@@ -45,7 +50,12 @@ namespace UI.Library.API
 			{
 				using (HttpResponseMessage response = await apiHelper.ApiClient.GetAsync($"/api/Memo/UserMemos/{UserName}"))
 				{
-					if (response.IsSuccessStatusCode)
+					if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
+					{
+						return Enumerable.Empty<MemoModel>();
+					}
+
+					else if (response.IsSuccessStatusCode)
 					{
 						var result = await response.Content.ReadAsAsync<IEnumerable<MemoModel>>();
 						return result;
@@ -66,19 +76,21 @@ namespace UI.Library.API
 		{
 			var request = new { MemoId };
 
-			using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Memo/RemoveMemo", request))
+			try
 			{
-
-				if (response.IsSuccessStatusCode)
+				using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Memo/RemoveMemo", request))
 				{
-					//TODO: Log Call
-					return true;
-				}
-				else
-				{
-					throw new InvalidOperationException(response.ReasonPhrase);
+					if (response.IsSuccessStatusCode)
+					{
+						return true;
+					}
+					else
+					{
+						throw new InvalidOperationException(response.ReasonPhrase);
+					}
 				}
 			}
+			catch (Exception ex) { return false; }
 		}
 	}
 }
