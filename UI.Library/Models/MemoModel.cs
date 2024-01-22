@@ -24,7 +24,12 @@ namespace UI.Library.Models
 		public string About { get; set; } = String.Empty;
 
 		public DateTime? PhotoCreateDate { get; set; }
-	}
+
+        public double Latitude { get; set; }
+
+		public double Longitude { get; set; }
+
+    }
 
 	[JsonSerializable(typeof(List<MemoModel>))]
 	public sealed partial class MemoContext : JsonSerializerContext

@@ -36,8 +36,12 @@ namespace MobilOyku.API.Library.DTOS
 			set { _photoCreateDate = value; }
 		}
 
+        public double Latitude { get; set; }
+
+		public double Longitude { get; set; }
 
 
 
-	}
+
+    }
 }
