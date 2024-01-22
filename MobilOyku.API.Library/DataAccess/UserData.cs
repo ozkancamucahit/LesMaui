@@ -20,13 +20,13 @@ namespace MobilOyku.API.Library.DataAccess
 		}
 		#endregion
 
-		public UserModel GetUserByUserName(string _UserName)
+		public async Task<UserModel> GetUserByUserName(string _UserName)
 		{
 			IEnumerable<UserModel> result;
 			try
 			{
 				var UserName = _UserName.Trim().Replace(" ", "");
-				result = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", new { UserName }, "OYKUDATA");
+				result =  await sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", new { UserName }, "OYKUDATA");
 			}
 			catch
 			{
@@ -37,9 +37,9 @@ namespace MobilOyku.API.Library.DataAccess
 			return result.Any() ? result.First() : new UserModel();
 		}
 
-		public bool SaveUser(UserCreateDTO user)
+		public async Task<bool> SaveUser(UserCreateDTO user)
 		{
-			 return sql.SaveData("[dbo].[spUser_Insert]", user);
+			 return await sql.SaveData("[dbo].[spUser_Insert]", user);
 		}
 	}
 }

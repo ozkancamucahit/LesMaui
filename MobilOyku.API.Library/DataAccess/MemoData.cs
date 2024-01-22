@@ -22,25 +22,26 @@ namespace MobilOyku.API.Library.DataAccess
 		#endregion
 
 
-		public void SaveMemo(MemoCreateDTO memo)
+		public async Task<int> SaveMemo(MemoCreateDTO memo)
 		{
 			try
 			{
-				sql.SaveData("[dbo].[spMemoInsert]", memo);
+				var id = await sql.SaveMemo("[dbo].[spMemoInsert]", memo);
+				return id;
 			}
 			catch (Exception ex)
 			{
 
-				throw;
+				return 0;
 			}
 		}
 		
-		public IEnumerable<MemoReadDTO> GetUserMemos(string UserName)
+		public async Task<IEnumerable<MemoReadDTO>> GetUserMemos(string UserName)
 		{
 			IEnumerable<MemoReadDTO> result;
 			try
 			{
-				result = sql.LoadData<MemoReadDTO, dynamic>("[dbo].[spLookupMemo]", new {UserName});
+				result = await sql.LoadData<MemoReadDTO, dynamic>("[dbo].[spLookupMemo]", new {UserName});
 			}
 			catch
 			{
@@ -51,17 +52,33 @@ namespace MobilOyku.API.Library.DataAccess
 			return result;
 		}
 
-		public void RemoveMemo(MemoDeleteDTO memo)
+		public async Task RemoveMemo(MemoDeleteDTO memo)
 		{
 			try
 			{
-				sql.SaveData("[dbo].[spMemo_Remove]", memo);
+				await sql.SaveData("[dbo].[spMemo_Remove]", memo);
 			}
 			catch (Exception ex)
 			{
 
 				throw;
 			}
+		}
+
+		public async Task<MemoReadDTO> GetMemo(int memoId)
+		{
+			IEnumerable<MemoReadDTO> result;
+			try
+			{
+				result = await sql.LoadData<MemoReadDTO, dynamic>("[dbo].[spMemoGetMemoById]", new { memoId });
+			}
+			catch
+			{
+
+				result = Enumerable.Empty<MemoReadDTO>();
+			}
+
+			return result.FirstOrDefault() ?? new MemoReadDTO();
 		}
 	}
 }

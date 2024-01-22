@@ -5,8 +5,8 @@ namespace MobilOyku.API.Library.DataAccess
 {
 	public interface IUserData
 	{
-		UserModel GetUserByUserName(string UserName);
+		Task<UserModel> GetUserByUserName(string UserName);
 
-		bool SaveUser(UserCreateDTO user);
+		Task<bool> SaveUser(UserCreateDTO user);
 	}
 }

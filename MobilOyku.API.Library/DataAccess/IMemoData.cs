@@ -6,10 +6,14 @@ namespace MobilOyku.API.Library.DataAccess
 {
 	public interface IMemoData
 	{
-		void SaveMemo(MemoCreateDTO memo);
+		Task<int> SaveMemo(MemoCreateDTO memo);
 
-		void RemoveMemo(MemoDeleteDTO memo);
+		Task RemoveMemo(MemoDeleteDTO memo);
 
-		IEnumerable<MemoReadDTO> GetUserMemos(string UserName);
+		Task<IEnumerable<MemoReadDTO>> GetUserMemos(string UserName);
+
+		
+		Task<MemoReadDTO> GetMemo(int memoId);
+
 	}
 }

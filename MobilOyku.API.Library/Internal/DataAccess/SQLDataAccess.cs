@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using MobilOyku.API.Library.DTOS;
 
 namespace MobilOyku.API.Library.Internal.DataAccess
 {
@@ -40,7 +41,7 @@ namespace MobilOyku.API.Library.Internal.DataAccess
 		}
 
 
-		public IEnumerable<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
+		public async Task<IEnumerable<T>> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
 		{
 			string cnnString = GetConnectionString(connectionStringName);
 			IEnumerable<T> result;
@@ -49,7 +50,7 @@ namespace MobilOyku.API.Library.Internal.DataAccess
 			{
 				using (IDbConnection cnn = new SqlConnection(cnnString))
 				{
-					var rows = cnn.Query<T>(
+					var rows = await cnn.QueryAsync<T>(
 						storedProcedure,
 						parameters,
 						commandType: CommandType.StoredProcedure);
@@ -65,7 +66,7 @@ namespace MobilOyku.API.Library.Internal.DataAccess
 
 		}
 
-		public bool SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
+		public async Task<bool> SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
 		{
 			string cnnString = GetConnectionString(connectionStringName);
 			int RowsEffected;
@@ -74,7 +75,7 @@ namespace MobilOyku.API.Library.Internal.DataAccess
 			{
 				using (IDbConnection cnn = new SqlConnection(cnnString))
 				{
-					RowsEffected = cnn.Execute(
+					RowsEffected = await cnn.ExecuteAsync(
 						storedProcedure,
 						parameters,
 						commandType: CommandType.StoredProcedure);
@@ -100,25 +101,34 @@ namespace MobilOyku.API.Library.Internal.DataAccess
 			isClosed = false;
 		}
 
-		public void SaveDataInTransaction<T>(string storedProcedure, T parameters)
+		public async Task SaveDataInTransaction<T>(string storedProcedure, T parameters)
 		{
-			_dbConnection?.Execute(
-			storedProcedure,
-			parameters,
-			commandType: CommandType.StoredProcedure,
-			transaction: _dbTransaction
-			);
+			if (_dbConnection != null)
+			{
+				await _dbConnection.ExecuteAsync(
+					storedProcedure,
+					parameters,
+					commandType: CommandType.StoredProcedure,
+					transaction: _dbTransaction
+					); 
+			}
 
 		}
 
-		public IEnumerable<T> LoadDataInTransaction<T, U>(string storedProcedure, U parameters)
+		public async Task<IEnumerable<T>> LoadDataInTransaction<T, U>(string storedProcedure, U parameters)
 		{
-			var rows = _dbConnection?.Query<T>(
+
+			IEnumerable<T>? rows = null;
+			if (_dbConnection != null)
+			{
+
+				rows = await _dbConnection.QueryAsync<T>(
 				storedProcedure,
 				parameters,
 				commandType: CommandType.StoredProcedure,
 				transaction: _dbTransaction
 				);
+			}
 
 			return rows ?? Enumerable.Empty<T>();
 		}
@@ -154,6 +164,42 @@ namespace MobilOyku.API.Library.Internal.DataAccess
 
 			_dbTransaction = null;
 			_dbConnection = null;
+		}
+
+		public async Task<int> SaveMemo(string storedProcedure, MemoCreateDTO parameter, string connectionStringName = "OYKUDATA")
+		{
+
+			try
+			{
+				string cnnString = GetConnectionString(connectionStringName);
+				int RowsEffected;
+
+				var p = new DynamicParameters();
+				p.Add("@UserId", parameter.UserId);
+				p.Add("@About", parameter.About, dbType: DbType.String, direction: ParameterDirection.Input, 2000);
+				p.Add("@Latitude", parameter.Latitude, dbType: DbType.Decimal, precision: 13, scale: 10);
+				p.Add("@Longitude", parameter.Longitude, dbType: DbType.Decimal, precision: 13, scale: 10);
+				p.Add("@Id", null, dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+				using (IDbConnection cnn = new SqlConnection(cnnString))
+				{
+					RowsEffected = await cnn.ExecuteAsync(
+						storedProcedure,
+						param: p,
+						commandType: CommandType.StoredProcedure);
+				}
+
+				if (RowsEffected <= 0)
+					throw new DataException("NO ROWS EFFECTED");
+				
+				var id = p.Get<int>("@Id");
+				return id;
+			}
+			catch (Exception ex)
+			{
+				return 0;
+			}
+
 		}
 	}
 }

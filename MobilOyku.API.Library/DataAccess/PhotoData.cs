@@ -21,16 +21,16 @@ namespace MobilOyku.API.Library.DataAccess
 		}
 		#endregion
 
-		public IEnumerable<MemoReadDTO> GetMemos(string UserName)
+		public async Task<IEnumerable<MemoReadDTO>> GetMemos(string UserName)
 		{
-			return memoData.GetUserMemos(UserName);
+			return await memoData.GetUserMemos(UserName);
 		}
 
-		public bool RemovePhoto(PhotoDeleteDTO photo)
+		public async Task<bool> RemovePhoto(PhotoDeleteDTO photo)
 		{
 			try
 			{
-				sql.SaveData("[dbo].[spPhoto_Remove]", photo);
+				await sql.SaveData("[dbo].[spPhoto_Remove]", photo);
 				return true;
 			}
 			catch (Exception ex)
@@ -40,7 +40,7 @@ namespace MobilOyku.API.Library.DataAccess
 			}
 		}
 
-		public bool SavePhoto(PhotoCreateDTO photo)
+		public async Task<bool> SavePhoto(PhotoCreateDTO photo)
 		{
 			try
 			{
