@@ -1,8 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[spMemoInsert]
 	@UserId INT,
 	@About VARCHAR(2000),
-	@Latitude DECIMAL(12,10),
-	@Longitude DECIMAL(12,10)
+	@Latitude DECIMAL(13,10),
+	@Longitude DECIMAL(13,10),
+	@Id INT = 0 OUTPUT
 AS
 /*
 	EXEC [dbo].[spMemoInsert]
@@ -21,6 +22,7 @@ BEGIN
 	 @Latitude, @Longitude
 	)
 
+	SET @Id = SCOPE_IDENTITY();
 
 END
 
