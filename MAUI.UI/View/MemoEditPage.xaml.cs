@@ -22,47 +22,53 @@ public partial class MemoEditPage : ContentPage
 	{
 		try
 		{
-			var viewmodel = BindingContext as MemoDetailViewModel;
+			//var viewmodel = BindingContext as MemoDetailViewModel;
 			Debug.WriteLine("SET LOCATION CALLED");
-			// Get cached location, else get real location.
 
 			var locationPermission = await CheckAndRequestLocationPermission();
 
-
-			if (locationPermission == PermissionStatus.Granted)
+			if (BindingContext is MemoDetailViewModel viewModel)
 			{
-				//var location = await geolocation.GetLastKnownLocationAsync();
-				//if (location == null)
-				//{
-				var	location = await geolocation.GetLocationAsync(new GeolocationRequest
+
+				if (locationPermission == PermissionStatus.Granted)
+				{
+					//var location = await geolocation.GetLastKnownLocationAsync();
+					//if (location == null)
+					//{
+					var location = await geolocation.GetLocationAsync(new GeolocationRequest
 					{
 						DesiredAccuracy = GeolocationAccuracy.Medium,
 						Timeout = TimeSpan.FromSeconds(30)
 					});
-				//}
+					//}
 
-				if (location != null)
-				{
-					var mapSpan = new MapSpan(location, 0.01, 0.01);
-
-					Pin pin = new Pin
+					if (location != null)
 					{
-						Label = $"{viewmodel?.UserName}'s new memo",
-						Address = "The city with a boardwalk",
-						Type = PinType.Place,
-						Location = new Location(location.Latitude, location.Longitude)
-					};
-					map.Pins.Add(pin);
-					map.MoveToRegion(mapSpan); 
+						var mapSpan = new MapSpan(location, 0.01, 0.01);
+
+						Pin pin = new Pin
+						{
+							Label = $"{viewModel.UserName}'s new memo",
+							Address = "The city with a boardwalk",
+							Type = PinType.Place,
+							Location = new Location(location.Latitude, location.Longitude)
+						};
+						map.Pins.Add(pin);
+						map.MoveToRegion(mapSpan);
+					}
+
+
+					lblLatitude.Text = location?.Latitude.ToString();
+					lblLongitude.Text = location?.Longitude.ToString();
+					
+					viewModel.Latitude = location?.Latitude ?? 0; 
+					viewModel.Longitude = location?.Longitude ?? 0;
 				}
+				else
+				{
+					await Shell.Current.DisplayAlert("Permission required!", "Location permission is required", "OK");
 
-
-				lblLatitude.Text = location?.Latitude.ToString();
-				lblLongitude.Text = location?.Longitude.ToString(); 
-			}
-			else
-			{
-				await Shell.Current.DisplayAlert("Permission required!", "Location permission is required", "OK");
+				}
 
 			}
 
@@ -72,26 +78,6 @@ public partial class MemoEditPage : ContentPage
 			Debug.WriteLine($"Unable to query location: {ex.Message}");
 			await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
 		}
-	}
-
-	private async Task<bool> GetPermission()
-	{
-		PermissionStatus Checkstatus = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-		PermissionStatus askStatus;
-
-		if (Checkstatus == PermissionStatus.Unknown ||
-			Checkstatus == PermissionStatus.Denied ||
-			Checkstatus == PermissionStatus.Disabled ||
-			Checkstatus == PermissionStatus.Restricted ||
-			Checkstatus == PermissionStatus.Limited
-			)
-		{
-			askStatus = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
-			return askStatus == PermissionStatus.Granted;
-		}
-		else
-			return true;
-
 	}
 
 	public async Task<PermissionStatus> CheckAndRequestLocationPermission()

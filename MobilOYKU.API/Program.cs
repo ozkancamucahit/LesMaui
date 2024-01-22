@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.WebHost.UseUrls("http://192.168.1.90:5124", "http://localhost:5124");
 
 builder.Services
 	.AddTransient<ISQLDataAccess, SQLDataAccess>()

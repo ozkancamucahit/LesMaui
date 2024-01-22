@@ -10,6 +10,12 @@
 
         
     <VerticalStackLayout>
+        <maps:Map x:Name="map" 
+                  IsScrollEnabled="False" 
+                  IsTrafficEnabled="False"
+                  HeightRequest="150"
+                  IsShowingUser="True"
+                  WidthRequest="370"/>
         <Label 
             x:Name="lblLatitude"
             VerticalOptions="Center" 
@@ -20,7 +26,6 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <maps:Map x:Name="map" IsScrollEnabled="False" IsTrafficEnabled="False"/>
 
         <Button x:Name="btnTakePhoto"
                 Text="Pick a photo"

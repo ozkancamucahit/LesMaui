@@ -8,7 +8,7 @@
              Title="{Binding Memo.UserName, StringFormat='{0}s Memo'}">
 
 
-    <ScrollView>
+    <!--<ScrollView>
         <Grid RowDefinitions="Auto,Auto,*">
 
             <BoxView
@@ -35,19 +35,45 @@
 
             <Label  Style="{StaticResource LargeLabel}" 
                     Grid.Row="1"
-                    TextColor="White"
                     FontAttributes="Bold"
-                    Text="{Binding Memo.About}" 
+                    Text="HEYY" 
                     HorizontalOptions="Center"
                     Margin="0,0,0,8"/>
 
-            <maps:Map x:Name="map" 
-                      IsScrollEnabled="False" 
-                      IsTrafficEnabled="False"
-                      Grid.Row="2"/>
+            --><!--<Button Text="Pick a photo"
+                    Command="{Binding PickPhotoCommand}"
+                    HeightRequest="50"/>--><!--
+
 
         </Grid>
-    </ScrollView>
+    </ScrollView>-->
 
+    <StackLayout Margin="10">
+        <Border StrokeShape="RoundRectangle 10"
+        Stroke="White"
+        StrokeThickness="6"
+        HeightRequest="160"
+        WidthRequest="160"
+        Margin="0,8,0,0"
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
+            <Image Aspect="AspectFill"
+            HeightRequest="160"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Source="{Binding Memo.PhotoFilePath}"
+            WidthRequest="160"/>
+        </Border>
+
+        <Label Text="{Binding Memo.About}"/>
+
+        <Label HorizontalTextAlignment="End"
+               Text="{Binding Memo.MemoDate}" />
+
+        <maps:Map x:Name="map"
+          HeightRequest="150"
+          WidthRequest="370"/>
+
+    </StackLayout>
 
 </ContentPage>

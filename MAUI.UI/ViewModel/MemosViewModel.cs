@@ -16,17 +16,26 @@ namespace MAUI.UI.ViewModel
 	[QueryProperty("UserName", "UserName")]
 	public partial class MemosViewModel : BaseViewModel
 	{
+		#region FIELDS
+
 		[ObservableProperty]
 		string userName = String.Empty;
-		public ObservableCollection<MemoModel> Memos { get;} = new ();
+		private readonly IMemoEndPoint memoEndPoint;
+
+		public ObservableCollection<MemoModel> Memos { get; } = new(); 
+
+
+		#endregion
 
 
 
-        public MemosViewModel(IMemoEndPoint memoEndPoint)
-        {
-            Title = "Username 's Memos";
-			
-		}
+		#region CTOR
+		public MemosViewModel(IMemoEndPoint memoEndPoint)
+		{
+			Title = "Username 's Memos";
+			this.memoEndPoint = memoEndPoint;
+		} 
+		#endregion
 
 		[RelayCommand]
 		public async Task RedirectToMemoEditAsync()
@@ -65,6 +74,24 @@ namespace MAUI.UI.ViewModel
 			{
 				{"Memo", model}
 			});
+		}
+
+		[RelayCommand]
+		public async Task GetMemos()
+		{
+			IsBusy = true;
+
+			if (!String.IsNullOrWhiteSpace(UserName))
+			{
+				var memos = await memoEndPoint.GetMemos(UserName);
+
+				foreach (var memo in memos.OrderBy(m => m.MemoDate))
+				{
+					if (!Memos.Any(m => m.Id == memo.Id))
+						Memos.Add(memo);
+				}
+			}
+			IsBusy = false;
 		}
 
 	}

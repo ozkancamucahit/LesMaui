@@ -2,37 +2,27 @@ using MAUI.UI.ViewModel;
 using UI.Library.API;
 
 namespace MAUI.UI.View;
-
 public partial class MemosPage : ContentPage
 {
-	private readonly IMemoEndPoint memoEndPoint;
 
-	public MemosPage(MemosViewModel viewModel, IMemoEndPoint memoEndPoint)
+
+	#region CTOR
+	public MemosPage(MemosViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
-		this.memoEndPoint = memoEndPoint;
-	}
+	} 
+	#endregion
 
 	protected override async void OnAppearing()
 	{
-		await GetMemos();
-	}
-
-	public async Task GetMemos()
-	{
-		var viewModel = BindingContext as MemosViewModel;
-
-		if (!String.IsNullOrWhiteSpace(viewModel?.UserName))
+		if (BindingContext is MemosViewModel viewModel) // != null
 		{
-			var memos = await memoEndPoint.GetMemos(viewModel.UserName);
-
-			foreach (var memo in memos)
-			{
-				viewModel.Memos.Add(memo);
-			}
+			await viewModel.GetMemos();
 		}
+
 	}
+
 
 
 

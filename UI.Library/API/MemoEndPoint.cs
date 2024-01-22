@@ -20,9 +20,9 @@ namespace UI.Library.API
 
 
 
-        public async Task<bool> AddMemo(int UserId, string About)
+        public async Task<bool> AddMemo(int UserId, string About, double Latitude, double Longitude )
 		{
-			var request = new { UserId, About};
+			var request = new { UserId, About, Latitude, Longitude};
 
 			try
 			{
