@@ -15,6 +15,8 @@ SELECT
 	,M.About
 	,M.CityId
 	,M.CreatedDate AS [MemoDate]
+	,M.Latitude
+	,M.Longitude
 	,U.UserName
 	,U.Id AS [UserId]
 	,P.FilePath AS [PhotoFilePath]
