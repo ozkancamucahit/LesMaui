@@ -52,8 +52,8 @@
         <Border StrokeShape="RoundRectangle 10"
         Stroke="White"
         StrokeThickness="6"
-        HeightRequest="160"
-        WidthRequest="160"
+        HeightRequest="160"  
+        WidthRequest="160"   
         Margin="0,8,0,0"
         HorizontalOptions="Center"
         VerticalOptions="Center">

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MobilOyku.API.Library.Models
@@ -19,6 +20,12 @@ namespace MobilOyku.API.Library.Models
 			set { _CreatedDate = value; }
 		}
 
+
+	}
+
+	[JsonSerializable(typeof(UserModel))]
+	public sealed partial class UserContext : JsonSerializerContext
+	{
 
 	}
 }

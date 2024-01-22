@@ -10,7 +10,7 @@ namespace UI.Library.API
 	public interface IMemoEndPoint
 	{
 		Task<IEnumerable<MemoModel>> GetMemos(string UserName);
-		Task<bool> AddMemo(int UserId, string About, double Latitude, double Longitude);
+		Task<int> AddMemo(int UserId, string About, double Latitude, double Longitude);
 		Task<bool> RemoveMemo(int MemoId);
 
 

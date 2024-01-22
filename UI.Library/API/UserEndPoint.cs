@@ -23,7 +23,7 @@ namespace UI.Library.API
 		{
 			try
 			{
-				using (HttpResponseMessage response = await apiHelper.ApiClient.GetAsync($"/api/Memo/UserMemos/{UserName}"))
+				using (HttpResponseMessage response = await apiHelper.ApiClient.GetAsync($"/api/User/ByUserName/{UserName}"))
 				{
 					if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
 					{

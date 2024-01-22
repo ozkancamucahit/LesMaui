@@ -24,7 +24,7 @@ namespace MobilOYKU.API.Controllers
 		{
 			try
 			{
-				var result = photoData.SavePhoto(photo);
+				var result = await photoData.SavePhoto(photo);
 
 				if (result)
 					return Ok();
@@ -42,7 +42,7 @@ namespace MobilOYKU.API.Controllers
 		{
 			try
 			{
-				var result = photoData.RemovePhoto(photo);
+				var result = await photoData.RemovePhoto(photo);
 
 				if (result)
 					return Ok();

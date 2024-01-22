@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MobilOyku.API.Library.DataAccess;
 using MobilOyku.API.Library.DTOS;
 using MobilOyku.API.Library.Models;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MobilOYKU.API.Controllers
 {
@@ -26,21 +27,46 @@ namespace MobilOYKU.API.Controllers
 		{
 			try
 			{
-				memoData.SaveMemo(memo);
-				return Created();
+				var memoId = await memoData.SaveMemo(memo);
+				if (memoId != 0)
+				{
+					return CreatedAtRoute(nameof(GetMemo), new { memoId }, memo);
+
+				}
+				else
+					return BadRequest("DB ERRROR");
 			}
 			catch (Exception ex)
 			{
 				return BadRequest(ex.Message);
 			}
 		}
-		
+
+		[HttpGet]
+		[Route("{memoId}", Name = nameof(GetMemo))]
+		public async Task<ActionResult<MemoReadDTO>> GetMemo(int memoId)
+		{
+			try
+			{
+				var res = await memoData.GetMemo(memoId);
+
+				if (res.Id == 0)
+					return NotFound();
+				else
+					return Ok(res);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> RemoveMemo(MemoDeleteDTO memo)
 		{
 			try
 			{
-				memoData.RemoveMemo(memo);
+				await memoData.RemoveMemo(memo);
 				return Ok();
 			}
 			catch (Exception ex)
@@ -55,7 +81,7 @@ namespace MobilOYKU.API.Controllers
 		{
 			try
 			{
-				var result =  memoData.GetUserMemos(UserName);
+				var result =  await memoData.GetUserMemos(UserName);
 
 				if (!result.Any())
 				{

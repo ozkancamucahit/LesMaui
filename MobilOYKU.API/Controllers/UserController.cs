@@ -25,9 +25,9 @@ namespace MobilOYKU.API.Controllers
 
 		[HttpGet]
 		[Route("{userName}", Name = nameof(ByUserName))]
-		public IActionResult ByUserName(string userName)
+		public async Task<IActionResult> ByUserName(string userName)
 		{
-			UserModel result = userData.GetUserByUserName(userName);
+			UserModel result = await userData.GetUserByUserName(userName);
 
 			if (String.IsNullOrWhiteSpace(result.UserName))
 				return NoContent();
@@ -37,14 +37,14 @@ namespace MobilOYKU.API.Controllers
 		}
 		
 		[HttpPost]
-		public IActionResult SaveUser(UserCreateDTO user)
+		public async Task<IActionResult> SaveUser(UserCreateDTO user)
 		{
 			
-			UserModel existingUser = userData.GetUserByUserName(user.UserName);
+			UserModel existingUser = await userData.GetUserByUserName(user.UserName);
 
 			if (existingUser.Id == 0)
 			{
-				var result = userData.SaveUser(user);
+				var result = await userData.SaveUser(user);
 
 				if (result)
 					return CreatedAtRoute(nameof(ByUserName), new { userName = user.UserName }, user);

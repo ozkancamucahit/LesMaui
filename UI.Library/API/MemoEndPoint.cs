@@ -20,7 +20,7 @@ namespace UI.Library.API
 
 
 
-        public async Task<bool> AddMemo(int UserId, string About, double Latitude, double Longitude )
+        public async Task<int> AddMemo(int UserId, string About, double Latitude, double Longitude )
 		{
 			var request = new { UserId, About, Latitude, Longitude};
 
@@ -28,9 +28,11 @@ namespace UI.Library.API
 			{
 				using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsJsonAsync("/api/Memo/SaveMemo", request))
 				{
-					if (response.IsSuccessStatusCode)
+					if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.Created)
 					{
-						return true;
+						// /api/Memo/GetMemo/17
+						// 0 => /, api, Memo, GetMemo, 17 => Id 
+						return int.Parse(response.Headers.Location?.Segments[4] ?? "0"); // created at route value for inserted id
 					}
 					else
 					{
@@ -40,7 +42,7 @@ namespace UI.Library.API
 			}
 			catch (Exception ex) 
 			{ 
-				return false; 
+				return 0; 
 			}
 		}
 

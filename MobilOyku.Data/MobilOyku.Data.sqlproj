@@ -78,6 +78,7 @@
     <Build Include="dbo\Stored Procedures\spPhoto_Insert.sql" />
     <Build Include="dbo\Stored Procedures\spMemo_Remove.sql" />
     <Build Include="dbo\Stored Procedures\spPhoto_Remove.sql" />
+    <Build Include="dbo\Stored Procedures\spMemoGetMemoById.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MobilOyku.Data.refactorlog" />
