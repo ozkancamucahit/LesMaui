@@ -26,8 +26,10 @@ namespace UI.Library.API
 			string api = String.Empty;
 
 			// api = "http://localhost:5124"; // PC
-			api = "http://10.0.2.2:5124"; // MOBILE
+			//api = "http://10.0.2.2:5124"; // MOBILE
 			//api = "https://192.168.1.89:54592"; // LOCAL_MOBILE
+
+			api = "https://dbljjqqb-5124.euw.devtunnels.ms";
 
 			apiClient = new HttpClient();
 			apiClient.BaseAddress = new Uri(api);
