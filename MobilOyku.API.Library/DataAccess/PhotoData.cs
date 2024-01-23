@@ -45,7 +45,7 @@ namespace MobilOyku.API.Library.DataAccess
 			try
 			{
 				sql.StartTransaction();
-				sql.SaveDataInTransaction("spPhoto_Insert", photo);
+				await sql.SaveDataInTransaction("spPhoto_Insert", photo);
 				sql.CommitTransaction();
 				return true;
 			}
