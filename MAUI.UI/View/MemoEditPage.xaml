@@ -9,7 +9,7 @@
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps">
 
         
-    <VerticalStackLayout>
+    <VerticalStackLayout Spacing="15">
         <maps:Map x:Name="map" 
                   IsScrollEnabled="False" 
                   IsTrafficEnabled="False"
@@ -25,6 +25,10 @@
             x:Name="lblLongitude"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Entry IsPassword="False"
+               x:Name="txtAbaout"
+               Text="{Binding Memo.About}"/>
 
 
         <Button x:Name="btnTakePhoto"

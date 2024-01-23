@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UserInterface.MAUI.View.MemoEditPage"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             Title="Add/Edit Memos"
+             xmlns:viewmodel="clr-namespace:UserInterface.MAUI.ViewModel"
+             x:DataType="viewmodel:MemoDetailViewModel"
+             xmlns:model="clr-namespace:UI.Library.Models;assembly=UI.Library"
+>
+    
+    
+    
+    <VerticalStackLayout Spacing="15">
+        <maps:Map x:Name="map" 
+                  IsScrollEnabled="False" 
+                  IsTrafficEnabled="False"
+                  HeightRequest="150"
+                  IsShowingUser="True"
+                  WidthRequest="370"/>
+
+        <Border StrokeShape="RoundRectangle 50"
+        Stroke="White"
+        StrokeThickness="6"
+        HeightRequest="160"
+        WidthRequest="160"
+        Margin="0,8,0,0"
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
+            <Image Aspect="AspectFill"
+            HeightRequest="160"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Source="{Binding Memo.PhotoFilePath}"
+            WidthRequest="160"
+            />
+        </Border>
+
+
+        <Label 
+            x:Name="lblLatitude"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Label 
+            x:Name="lblLongitude"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Entry IsPassword="False"
+               x:Name="txtAbaout"
+               Text="{Binding Memo.About}"
+               MaxLength="300"
+               Unfocused="txtAbaout_Unfocused"/>
+
+
+        <Button x:Name="btnPickPhoto"
+                Margin="5"
+                    Text="Pick a photo"
+                    Command="{Binding PickPhotoCommand}" />
+
+
+        <Button x:Name="btnSaveMemo"
+                Margin="5"
+                Text="Save a Memo" 
+                IsEnabled="{Binding IsNotBusy}"
+                Command="{Binding SaveMemoCommand}"/>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                   IsRunning="{Binding IsBusy}"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Center"
+	   Color="{StaticResource Primary}"
+                   Grid.RowSpan="2"
+                   Grid.ColumnSpan="2"/>
+
+    </VerticalStackLayout>
+</ContentPage>

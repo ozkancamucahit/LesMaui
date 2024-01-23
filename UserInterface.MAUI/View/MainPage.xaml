@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UserInterface.MAUI.View.MainPage"
+             Title="MainPage">
+    <ScrollView>
+        <VerticalStackLayout
+        Padding="0,0"
+        Spacing="15">
+            <Image
+            Source="dotnet_bot.png"
+            HeightRequest="185"
+            Aspect="AspectFit"
+            SemanticProperties.Description="dot net bot in a race car number eight" />
+
+            <Label
+            Text="Hello"
+            Style="{StaticResource LargeLabel}"
+            SemanticProperties.HeadingLevel="Level1"
+            HorizontalOptions="Center"/>
+
+            <Label
+            x:Name="lblInfo"
+            Text="Provide UserName to Login"  
+            Style="{StaticResource MediumLabel}"
+            SemanticProperties.HeadingLevel="Level2"
+            HorizontalOptions="Center"/>
+
+            <Entry WidthRequest="200" x:Name="txtUserName"/>
+
+            <Button  
+            x:Name="LoginBtn"
+            Text="Login" 
+            SemanticProperties.Hint="log in"
+            Clicked="LoginBtn_Clicked"
+            HorizontalOptions="Fill" 
+            WidthRequest="200"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -15,7 +15,13 @@ namespace UI.Library.Models
 
 		public string CityId { get; set; } = String.Empty;
 
-		public DateTime MemoDate { get; set; }
+		private DateTime _memoDate;
+
+		public DateTime MemoDate
+		{
+			get { return _memoDate.ToLocalTime(); }
+			set { _memoDate = value; }
+		}
 
 		public string UserName { get; set; } = String.Empty;
 

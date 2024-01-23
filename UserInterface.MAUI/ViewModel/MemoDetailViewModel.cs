@@ -1,19 +1,16 @@
-﻿
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MobilOyku.API.Library.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UI.Library.API;
 using UI.Library.Models;
 
-namespace MAUI.UI.ViewModel
+namespace UserInterface.MAUI.ViewModel
 {
 	[QueryProperty("Memo", "Memo")]
 	[QueryProperty("UserName", "UserName")]
@@ -27,18 +24,22 @@ namespace MAUI.UI.ViewModel
 		private readonly IMediaPicker mediaPicker;
 		private readonly IUserEndPoint userEndPoint;
 		private readonly IPhotoEndPoint photoEndPoint;
+
 		[ObservableProperty]
 		MemoModel memo = new();
 
 		[ObservableProperty]
 		string userName = String.Empty;
 
+		//[ObservableProperty]
+		//string localFilePath;
+
 		[ObservableProperty]
 		double latitude;
 
 		[ObservableProperty]
 		double longitude;
-		
+
 
 		#endregion
 
@@ -73,33 +74,60 @@ namespace MAUI.UI.ViewModel
 					if (photo != null)
 					{
 
-						UserModel UserRes = await userEndPoint.GetUser(UserName);
-						string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
-
-						var memoId = await memoEndPoint.AddMemo(UserRes.Id, "about test w photo", Latitude, Longitude);
-
-						if (memoId == 0)
-							throw new InvalidOperationException("UNABLE TO ADD MEMO");
-						else if (!String.IsNullOrWhiteSpace(localFilePath))
-						{
-							var photoRes = await photoEndPoint.AddPhoto(memoId, localFilePath);
-							if (photoRes == false)
-							{
-								throw new InvalidOperationException("UNABLE TO ADD PHOTO");
-							}
-						}
+						Memo.PhotoFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Unable to operate: {ex.Message}");
+				Debug.WriteLine($"Unable to pick photo: {ex.Message}");
 				await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
 			}
 			finally
 			{
 				IsBusy = false;
 			}
+		}
+
+		[RelayCommand]
+		public async Task SaveMemo()
+		{
+
+			try
+			{
+				IsBusy = true;
+
+				UserModel UserRes = await userEndPoint.GetUser(UserName);
+				var memoId = await memoEndPoint.AddMemo(UserRes.Id, Memo.About, Latitude, Longitude);
+
+				if (memoId == 0)
+					throw new InvalidOperationException("UNABLE TO ADD MEMO");
+				else if (!String.IsNullOrWhiteSpace(Memo.PhotoFilePath))
+				{
+					var photoRes = await photoEndPoint.AddPhoto(memoId, Memo.PhotoFilePath);
+					if (photoRes == false)
+					{
+						throw new InvalidOperationException("UNABLE TO ADD PHOTO");
+					}
+					else
+					{
+						await Shell.Current.DisplayAlert("Memo Added", "Your memo have been added", "OK");
+						await Shell.Current.GoToAsync($"MemosPage?UserName={UserName}");
+
+					}
+				}
+
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Unable to save memo: {ex.Message}");
+				await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
+			}
+			finally
+			{
+				IsBusy = false;
+			}
+
 		}
 
 
