@@ -20,7 +20,7 @@ public partial class MemoDetailPage : ContentPage
 	{
 		if (BindingContext is MemoDetailViewModel viewModel)
 		{
-			Location location = new Location(41.0227878251, 29.0069532394);
+			Location location = new Location(viewModel.Memo.Latitude, viewModel.Memo.Longitude);
 			Pin pin = new Pin
 			{
 				Label = $"{viewModel.Memo.UserName}'s new memo",
